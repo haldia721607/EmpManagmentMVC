@@ -1,0 +1,134 @@
+﻿@model EmpManagment.Bol.ViewModels.UserAreaViewModels.ViewModels.EditUserViewModel
+
+@{
+    ViewBag.Title = "Edit User";
+}
+
+<h2>Edit User</h2>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="form-group  row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-8">
+                            <h3>Edit User</h3>
+                        </div>
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-8"></div>
+                    </div>
+                    @using (Html.BeginForm("EditUser", "Administration", new { Area = "User" }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="text-danger">@Html.ValidationSummary()</div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Id</label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(model => model.Id, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(model => model.Email, htmlAttributes: new { @class = "form-control", @placeholder = "Email" })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">User Name</label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(model => model.UserName, htmlAttributes: new { @class = "form-control", @placeholder = "User Name" })
+                                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" asp-for="CountryId">Country</label>
+                            <div class="col-sm-3">
+                                @Html.DropDownListFor(model => model.CountryId, new SelectList(Model.Countries, "Value", "Text"), "Select Country", htmlAttributes: new { @class = "form-control", @id = "ddlcountry" })
+                                @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" asp-for="StateId">State</label>
+                            <div class="col-sm-3">
+                                @Html.DropDownListFor(model => model.StateId, new SelectList(Model.States, "Value", "Text", "Value"), "Select State", htmlAttributes: new { @class = "form-control", @id = "ddlstate" })
+                                @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+                                @Html.Hidden("getStates", Url.Action("GetStatelist", "Account", new { Area = "Security" }))
+                                <span id="states-loading-progress" style="display: none;">Please wait..</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" asp-for="CityId">City</label>
+                            <div class="col-sm-3">
+                                @Html.DropDownListFor(model => model.CityId, new SelectList(Model.Cities, "Value", "Text", "Value"), "Select City", htmlAttributes: new { @class = "form-control", @id = "ddlcity" })
+                                @Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })
+                                @Html.Hidden("getCites", Url.Action("GetCitylist", "Account", new { Area = "Security" }))
+                                <span id="city-loading-progress" style="display: none;">Please wait..</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a class="btn btn-primary m-b m-t" href="@Url.Action("Users","Administration",new { Area = "User" })">Cancel</a>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>User Roles</h3>
+                            </div>
+                            <div class="card-body">
+                                @if (Model.Roles.Any())
+                                {
+                                    foreach (var role in Model.Roles)
+                                    {
+                                        <h5 class="card-title">@role</h5>
+                                    }
+                                }
+                                else
+                                {
+                                    <h5 class="card-title">None at the moment</h5>
+                                }
+                            </div>
+                            <div class="card-footer">
+                                @Html.ActionLink("Manage Roles", "ManageUserRoles", "Administration", new { area = "User", userId = Model.Id }, htmlAttributes: new { @class = "btn btn-primary", @style = "width:auto" })
+                            </div>
+                        </div>
+
+                        <div class="card mt-3">
+                            <div class="card-header">
+                                <h3>User Claims</h3>
+                            </div>
+                            <div class="card-body">
+                                @if (Model.Claims.Any())
+                                {
+                                    foreach (var claim in Model.Claims)
+                                    {
+                                        <h5 class="card-title">@claim</h5>
+                                    }
+                                }
+                                else
+                                {
+                                    <h5 class="card-title">None at the moment</h5>
+                                }
+                            </div>
+                            <div class="card-footer">
+                                @Html.ActionLink("Manage Claims", "ManageUserClaims", "Administration", new { area = "User", userId = Model.Id }, htmlAttributes: new { @class = "btn btn-primary", @style = "width:auto" })
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/Scripts/CustomScripts/Custom.js"></script>
+}
+
+
+
+

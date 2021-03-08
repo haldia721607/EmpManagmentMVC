@@ -1,0 +1,93 @@
+﻿@model EmpManagment.Bol.Entities.ComplaientCategory
+@{
+    ViewBag.Title = "Add Complaient Category";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Complaient Category</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                @Html.ActionLink("Home", "Index", "Dashboard", new { area = "User" })
+            </li>
+            <li class="breadcrumb-item">
+                <a>Category Lists</a>
+            </li>
+            <li class="active breadcrumb-item">
+                <strong>Add Complaient Category</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="form-group  row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4">
+                            <h3>Add Complaient Category</h3>
+                        </div>
+                        <div class="col-sm-4"></div>
+                    </div>
+                    @using (Html.BeginForm("AddCategory", "Complaient", new { Area = "User" }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken();
+                        <div class="form-group  row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-4">
+                                <div class="text-danger font-bold">@Html.ValidationSummary()</div>
+                            </div>
+                            <div class="col-sm-4"></div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Description</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.Description, htmlAttributes: new { @class = "form-control", @placeholder = "Description" })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Status</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownList("Status", new List<SelectListItem>
+                                                     {
+                                                        new SelectListItem{ Text="Select Status", Value = "" },
+                                                        new SelectListItem{ Text="Active", Value = "true" },
+                                                        new SelectListItem{ Text="Not-Active", Value = "false" }
+                                                     })
+                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group  row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-2">
+                                <button type="submit" class="btn btn-primary block  m-b">Add Category</button>
+                            </div>
+                            <div class="col-sm-2">
+                                @Html.ActionLink("Category List", "ListCategory", "Complaient", new { area = "User" }, htmlAttributes: new { @class = "btn btn-primary" })
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ('@ViewBag.message' == "Added") {
+            debugger;
+            // Display a success toast, with a title
+            toastr.success(message = 'Category created successfully.', title ='Added')
+        }
+        });
+</script>

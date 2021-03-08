@@ -1,0 +1,566 @@
+﻿@using System.Configuration;
+@model EmpManagment.Bol.ViewModels.UserAreaViewModels.ViewModels.ComplainantViewModel
+@{
+    ViewBag.Title = "New Complaient";
+    var projectName = ConfigurationManager.AppSettings["SolutionProjectName"];
+    var photoPath = "/EmpManagment/img/no-image.jpg";
+    var noFile = "/EmpManagment/img/NoFile.png";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>New Complaient</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                @Html.ActionLink("Home", "Index", "Dashboard", new { area = "User" })
+            </li>
+            <li class="breadcrumb-item">
+                <a>New Complaient</a>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="form-group  row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4">
+                            <h3>New Complaient</h3>
+                        </div>
+                        <div class="col-sm-4"></div>
+                    </div>
+                    @using (Html.BeginForm("createcomplaient", "Complaient", new { Area = "User" }, FormMethod.Post, new { enctype = "multipart/form-data", @id = "#form1" }))
+                    {
+                        <input type="hidden" id="soluationName" value="@projectName" />
+                        <input type="hidden" id="noImageId" value="@photoPath" />
+                        <input type="hidden" id="noFileId" value="@noFile" />
+                        <div class="form-group  row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-4">
+                                <input id="errorId" type="hidden" value="@Model.Error" />
+                                <input id="messageId" type="hidden" value="@Model.Message" />
+                                <span class="text-danger font-bold" style="display:none" id="divError">@Model.Error</span>
+                                @*<div class="text-danger font-bold">@Html.ValidationSummary()</div>*@
+                            </div>
+                            <div class="col-sm-4"></div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Complainant Name</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.ComplainantName, htmlAttributes: new { @class = "form-control", @placeholder = "Complainant Name" })
+                                @Html.ValidationMessageFor(model => model.ComplainantName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="ComplainantEmail">Email</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.ComplainantEmail, htmlAttributes: new { @class = "form-control", @placeholder = "Complainant Email" })
+                                @Html.ValidationMessageFor(model => model.ComplainantEmail, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*CompaientDate For Tbl Complaient*@
+                        <div class="form-group  row" id="data_1">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 font-normal">Complaient Date-One</label>
+                            <div class="col-sm-6">
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    @Html.TextBoxFor(model => model.CompaientDate, htmlAttributes: new { @class = "form-control", @placeholder = "Compaient Date" })
+                                    @Html.ValidationMessageFor(model => model.CompaientDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        @*CompaientDate For Tbl  Complaient Detail *@
+                        <div class="form-group  row" id="data_22">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 font-normal" asp-for="ComplaientDate">Complaient Date-Two</label>
+                            <div class="col-sm-6">
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    @Html.TextBoxFor(model => model.ComplaientDate, htmlAttributes: new { @class = "form-control", @placeholder = "Complaient Date" })
+                                    @Html.ValidationMessageFor(model => model.ComplaientDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="ComplaientCategoryId">Category</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.ComplaientCategoryId, new SelectList(Model.ComplaientCategory, "Value", "Text"), "Select Category", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ComplaientCategoryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*<div class="form-group  row">
+                                <div class="col-sm-2"></div>
+                                <label class="col-sm-2 col-form-label" asp-for="GenderOptions">Gender Options</label>
+                                <div class="col-sm-6">
+                                    <div class="row">
+                                        <select id="ddlGender" asp-for="GenderOptions" asp-items="@Html.GetEnumSelectList<GenderOptions>()" class="form-control">
+                                            <option value="">Select Gender Options</option>
+                                        </select>
+                                    </div>
+                                    <span asp-validation-for="GenderOptions" class="text-danger"></span>
+                                </div>
+                            </div>*@
+
+                        <div class="form-group  row" id="divGenderDropdown">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Gender</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.GenderId, new SelectList(Model.Gender, "Value", "Text"), "Select Gender", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row" id="divGenderRadio">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Gender</label>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    @foreach (var item in (new SelectList(Model.Gender, "Value", "Text")))
+                                    {
+                                        <div class="radio">
+                                            <input type="radio" id="@item.Value" class="cllRdGender" name="rdGender" value="@item.Value">
+                                            <label for="@item.Value">@item.Text</label>
+                                        </div>
+                                    }
+                                </div>
+                                <span class="text-danger font-bold" style="display:none" id="divRd">Please select gender!</span>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        @*<div class="form-group  row">
+                                <div class="col-sm-2"></div>
+                                <label class="col-sm-2 col-form-label" asp-for="CategoriesOptions">Categories Options</label>
+                                <div class="col-sm-6">
+                                    <div class="row">
+                                        <select id="ddlCategoriesOptions" asp-for="CategoriesOptions" asp-items="@Html.GetEnumSelectList<CategoriesOptions>()" class="form-control">
+                                            <option value="">Select Categories Options</option>
+                                        </select>
+                                    </div>
+                                    <span asp-validation-for="CategoriesOptions" class="text-danger"></span>
+                                </div>
+                            </div>*@
+
+                        <div class="form-group  row" id="divBikeCategoriesCheckBox">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Bike Category</label>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    @for (int i = 0; i < Model.BikeCategories.Count; i++)
+                                    {
+                                        @*<input type="hidden" value="@Model.BikeCategories[i].BikeCategoryId" />
+                                        <input type="hidden" value="@Model.BikeCategories[i].Name" />
+                                        <input type="hidden" value="@Model.BikeCategories[i].Description" />*@
+                                    <div class="col-sm-1">
+                                        @Html.TextBoxFor(model => model.BikeCategories[i].BikeCategoryId, htmlAttributes: new { @style = "display:none" })
+                                        @Html.CheckBoxFor(model => model.BikeCategories[i].Status, htmlAttributes: new { @class = "chk", @type = "checkbox" })
+                                        @*<input class="chk" type="checkbox" asp-for="@Model.BikeCategories[i].Status" />*@
+                                    </div>
+                                        <div class="col-sm-3">
+                                            <label for="@Model.BikeCategories[i].Status" title="@Model.BikeCategories[i].Description">
+                                                @Model.BikeCategories[i].Name
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                                <span class="text-danger font-bold" style="display:none" id="divChk">Please select at-least one bike categories!</span>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        <div class="form-group  row" id="divBikeCategoriesSelectList">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Bike Category</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.BikeCategoriesSelectListId, new SelectList(Model.BikeCategoriesSelectList, "Value", "Text"), "Select Bike Categorie", htmlAttributes: new { @class = "form-control", @id = "ddlBikeCategories", @multiple = "multiple", @style = "height: 100px" })
+                                @*@Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })*@
+                                <span class="text-danger font-bold" style="display:none" id="divBikeCategories">Please select at-least one bike categories!</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group  row" id="divCountry">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="CountryId">Country</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.CountryId, new SelectList(Model.Countries, "Value", "Text"), "Select Country", htmlAttributes: new { @class = "form-control", @id = "ddlcountry" })
+                                @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row" style="display:none" id="divState">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="StateId">State</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.StateId, new SelectList(string.Empty, "Value", "Text"), "Select State", htmlAttributes: new { @class = "form-control", @id = "ddlstate" })
+                                @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row" style="display:none" id="divCity">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="CityId">City</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.CityId, new SelectList(string.Empty, "Value", "Text"), "Select City", htmlAttributes: new { @class = "form-control", @id = "ddlcity" })
+                                @Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Description</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.Description, htmlAttributes: new { @class = "form-control", @placeholder = "Description" })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="PermamentAddress">Permament Address</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.PermamentAddress, htmlAttributes: new { @class = "form-control", @placeholder = "Permament Address" })
+                                @Html.ValidationMessageFor(model => model.PermamentAddress, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="PermamentAddressPostalCode">Permament Address Postal Code</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.PermamentAddressPostalCode, htmlAttributes: new { @class = "form-control", @placeholder = "Permament Address Postal Code", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.PermamentAddressPostalCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="TempAddress">Temp Address</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.TempAddress, htmlAttributes: new { @class = "form-control", @placeholder = "Temp Address" })
+                                @Html.ValidationMessageFor(model => model.TempAddress, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="TempAddressPostalCode">Temp Address Postal Code</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.TempAddressPostalCode, htmlAttributes: new { @class = "form-control", @placeholder = "Temp Address Postal Code", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.TempAddressPostalCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*Only single image uplod to floder with image preview*@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Singale Image(Folder)</label>
+                            <div class="col-sm-6">
+                                <div class="row mb-1">
+                                    <div>
+                                        <img id="uploadPreview" src="@photoPath" style="width:100px;height:100px;" />
+                                        <p id="pUploadPreview" style="width: 100px;"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="btn-group">
+                                        <label title="Upload image file" for="uploadImage" class="btn btn-primary">
+                                            @Html.TextBoxFor(model => model.SingleImageSaveToFolder, htmlAttributes: new { @class = "custom-file-inputt", @placeholder = "Temp Address Postal Code", @id = "uploadImage", @type = "file", @accept = ".png, .jpg, .jpeg" })
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        @*Muliple images uplod to floder with multiple image preview**@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Multiple Image(Folder)</label>
+                            <div class="col-sm-8">
+                                <div class="append_pre_p_v">
+                                    <div class="row mb-1">
+                                        <div class="filearray" style="width: 100%;">
+                                        </div>
+                                        <span class="text-danger font-bold" id="spanMaxImageFolder" style="display:none">Maximum <b>4</b> image can uplode!</span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="btn-group">
+                                            <label title="Upload image file" for="uploadImage" class="custom-file-labell btn btn-primary">
+                                                @Html.TextBoxFor(model => model.MultipleImageSaveToFolder, htmlAttributes: new { @class = "custom-file-inputtt", @placeholder = "Temp Address Postal Code", @id = "multipleImgePreview", @type = "file", @accept = ".png, .jpg, .jpeg", @multiple = "multiple" })
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Only single image uplod to database with image preview*@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Singale Image(Database)</label>
+                            <div class="col-sm-6">
+                                <div class="row mb-1">
+                                    <div>
+                                        <img id="databaseUplodImage" src="@photoPath" style="width:100px;height:100px;" />
+                                        <p id="pDatabaseUplodImage" style="width: 100px;"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="btn-group">
+                                        <label title="Upload image file" for="uploadImage" class="btn btn-primary">
+                                            @Html.TextBoxFor(model => model.SingleImageSaveToDatabase, htmlAttributes: new { @class = "imagesavetodb", @placeholder = "Temp Address Postal Code", @id = "databaseUploadImage", @type = "file", @accept = ".png, .jpg, .jpeg" })
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        @*Muliple images uplod to database with multiple image preview**@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Multiple Image(Databse)</label>
+                            <div class="col-sm-8">
+                                <div class="append_pre_p_v">
+                                    <div class="row mb-1">
+                                        <div class="databseFilearray" style="width: 100%;">
+                                        </div>
+                                        <span class="text-danger font-bold" id="spanMaxImageDatabase" style="display:none">Maximum <b>4</b> image can uplode!</span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="btn-group">
+                                            <label title="Upload image file" for="uploadImage" class="custom-file-labell btn btn-primary">
+                                                @Html.TextBoxFor(model => model.MultipleImageSaveToDatabase, htmlAttributes: new { @class = "custom-file-inputtt", @id = "databaseMultipleImgePreview", @type = "file", @accept = ".png, .jpg, .jpeg", @multiple = "multiple" })
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Only single doc/pdf/excel uplod to floder *@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Singale File(Folder)</label>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div>
+                                        <img id="uploadFilePreview" src="@noFile" style="width:100px;height:100px;" />
+                                    </div>
+                                </div>
+                                <div class="row mb-1">
+                                    <p id="puploadFilePreview"></p>
+                                </div>
+                                <div class="row">
+                                    <div class="btn-group">
+                                        <label title="Upload image file" for="uploadFile" class="btn btn-primary">
+                                            @Html.TextBoxFor(model => model.SingleFileSaveToFolder, htmlAttributes: new { @class = "doc-excel-pdf", @id = "uploadFile", @type = "file", @accept = ".pdf , .xlsx , .docx" })
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        @*Multile doc/pdf/excel uplod to floder *@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Multiple File(Folder)</label>
+                            <div class="col-sm-8">
+                                <div class="append_pre_p_v">
+                                    <div class="row">
+                                        <div class="divFile" style="width: 100%;">
+                                        </div>
+                                        <span class="text-danger font-bold" id="spanMaxFileFolder" style="display:none">Maximum <b>2</b> file can uplode!</span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="btn-group">
+                                            <label title="Upload image file" for="uploadMultiFile" class="custom-file-labell btn btn-primary">
+                                                @Html.TextBoxFor(model => model.MultipleFileSaveToFolder, htmlAttributes: new { @class = "multi-doc-excel-pdf", @id = "multipleFilePreview", @type = "file", @accept = ".pdf , .xlsx , .docx", @multiple = "multiple" })
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Only single doc/pdf/excel uplod to database *@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Singale File(Database)</label>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <img id="uploadFileToDatabasePreview" src="@noFile" style="width:100px;height:100px;" asp-append-version="true" />
+                                </div>
+                                <div class="row mb-1">
+                                    <p id="puploadFileDatabasePreview"></p>
+                                </div>
+                                <div class="row">
+                                    <div class="btn-group">
+                                        <label title="Upload image file" for="uploadFile" class="btn btn-primary">
+                                            @Html.TextBoxFor(model => model.SingleFileSaveToDatabase, htmlAttributes: new { @class = "doc-excel-pdf-databse", @id = "uploadFileDatabase", @type = "file", @accept = ".pdf , .xlsx , .docx" })
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        @*Multile doc/pdf/excel uplod to database *@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Multiple File(Database)</label>
+                            <div class="col-sm-8">
+                                <div class="append_pre_p_v">
+                                    <div class="row">
+                                        <div class="divFileDatabase" style="width: 100%;">
+                                        </div>
+                                        <span class="text-danger font-bold" id="spanMaxFileDatabase" style="display:none">Maximum <b>2</b> file can uplode!</span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="btn-group">
+                                            <label title="Upload image file" for="uploadMultiFileDatabase" class="custom-file-labell btn btn-primary">
+                                                @Html.TextBoxFor(model => model.MultipleFileSaveToDatabase, htmlAttributes: new { @class = "multi-doc-excel-pdf-database", @id = "multipleFileDatabase", @type = "file", @accept = ".pdf , .xlsx , .docx", @multiple = "multiple" })
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Only single excel data insert to database *@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Bulk insert using excel(Database)</label>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <img id="imgBulkInsert" src="@noFile" style="width:100px;height:100px;" asp-append-version="true" />
+                                </div>
+                                <div class="row mb-1">
+                                    <p id="pBulkInsertFileName"></p>
+                                </div>
+                                <div class="row">
+                                    <div class="btn-group">
+                                        <label title="Upload image file" for="uploadFile" class="btn btn-primary">
+                                            @Html.TextBoxFor(model => model.ExcelFileDataSaveToDatabase, htmlAttributes: new { @class = "Bulk-Insert-File-To-Database", @id = "bulkInsertToDatabase", @type = "file", @accept = ".xlsx" })
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        @*Only number of image count show*@
+                        @*<div class="form-group row">
+                                <div class="col-sm-2"></div>
+                                <label class="col-sm-2 col-form-label">Multiple Image(Folder)</label>
+                                <div class="col-sm-6">
+                                    <div class="append_pre_p_v">
+                                        <div class="row mb-1">
+                                            <div class="filearray">
+                                            </div>
+                                            <img id="uploadPreview" src="@photoPath" style="width:100px;height:100px;" asp-append-version="true" />
+                                        </div>
+                                        <div class="row">
+                                            <div class="btn-group">
+                                                <label title="Upload image file" for="uploadImage" class="custom-file-labell btn btn-primary">
+                                                    <input id="uploadImage" type="file" multiple accept="image/x-png,image/gif,image/jpeg" class="custom-file-inputtt" name="file">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>*@
+
+                        <div class="form-group  row">
+                            <div class="col-sm-12">
+                                <div class="m-b-sm m-t">
+                                    <small>
+                                        <strong style="color:red;font-weight:bold;">Terms & Conditions:</strong>We welcome users to register on our digital platforms. We offer the below mentioned registration services which may be subject to change in the future. All changes will be appended in the terms and conditions page and communicated to existing users by email.
+
+                                        Registration services are offered for individual subscribers only. If multiple individuals propose to access the same account or for corporate accounts kindly contact or write in to us. Subscription rates will vary for multiple same time access.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                @Html.CheckBoxFor(model => model.TermsAndConditions, htmlAttributes: new { @class = "cchkTermsAndConditions", @id = "idTermsAndConditions", @type = "checkbox" })
+                            </div>
+                            <span class="text-danger font-bold" style="display:none" id="divTermsAndConditions"><strong>Please check Terms & Conditions check box!</strong></span>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-2">
+                                <button type="submit" id="btnCreate" class="btn btn-primary block  m-b">Create Complaient</button>
+                            </div>
+                            <div class="col-sm-2">
+                                @Html.ActionLink("Complaients List", "complaients", "Complaient", new { area = "User" }, htmlAttributes: new { @class = "btn btn-primary" })
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*I am using these references directly only for learning purpose. If you use professionally then make bundal
+    config and put all reference there and add bundal config reference here*@
+@section Styles {
+    <link rel="stylesheet" href="~/Scripts/lib/iCheck/custom.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/clockpicker/clockpicker.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/chosen/bootstrap-chosen.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/switchery/switchery.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/ionRangeSlider/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/ionRangeSlider/ion.rangeSlider.skinFlat.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/colorpicker/bootstrap-colorpicker.min.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/nouslider/jquery.nouislider.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/cropper/dist/cropper.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/select2/dist/css/select2.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/bootstrap-tagsinput/bootstrap-tagsinput.css" />
+}
+
+@section Scripts {
+    <script src="~/Scripts/lib/moment/moment.js"></script>
+    <script src="~/Scripts/lib/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/lib/clockpicker/clockpicker.js"></script>
+    <script src="~/Scripts/lib/chosen/chosen.jquery.js"></script>
+    <script src="~/Scripts/lib/switchery/switchery.js"></script>
+    <script src="~/Scripts/lib/daterangepicker/daterangepicker.js"></script>
+    <script src="~/Scripts/lib/ionRangeSlider/ion.rangeSlider.min.js"></script>
+    <script src="~/Scripts/lib/colorpicker/bootstrap-colorpicker.min.js"></script>
+    <script src="~/Scripts/lib/nouslider/jquery.nouislider.min.js"></script>
+    <script src="~/Scripts/lib/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
+    <script src="~/Scripts/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/lib/jknob/dist/jquery.knob.min.js"></script>
+    <script src="~/Scripts/lib/cropper/dist/cropper.js"></script>
+    <script src="~/Scripts/lib/select2/dist/js/select2.js"></script>
+    <script src="~/Scripts/lib/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.js"></script>
+    <script src="~/Scripts/lib/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+    <script src="~/Scripts/lib/dualListbox/jquery.bootstrap-duallistbox.js"></script>
+    <script src="~/Scripts/js/ComplaientCustom.js"></script>
+    <script src="~/Scripts/js/FormControlsFunctions.js"></script>
+}

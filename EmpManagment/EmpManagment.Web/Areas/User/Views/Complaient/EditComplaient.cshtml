@@ -1,0 +1,755 @@
+﻿@model EmpManagment.Bol.ViewModels.UserAreaViewModels.ViewModels.ComplainantViewModel
+@using System.Configuration;
+@{
+    ViewBag.Title = "Edit Complaient";
+    var projectName = ConfigurationManager.AppSettings["SolutionProjectName"];
+    var photoPath = "/" + projectName + "/Content/img/no-image.jpg";
+    var fileImage = "/" + projectName + "/Content/img/NoFile.png";
+    var singleFileSaveToFolderViewModel = "";
+    var singleFileSaveToDatabaseViewModel = "";
+    var excelFileDataSaveToDatabaseViewModel = "";
+    if (Model.SingleFileSaveToFolderViewModel != null)
+    {
+        string[] extensation = Model.SingleFileSaveToFolderViewModel.Name.Split('.');
+        if (extensation[1].ToLower() == "pdf")
+        {
+            singleFileSaveToFolderViewModel = "/" + projectName + "/Content/img/Pdf.png";
+        }
+        else if (extensation[1].ToLower() == "xlsx")
+        {
+            singleFileSaveToFolderViewModel = "/" + projectName + "/Content/img/Excel.png";
+        }
+        else if (extensation[1].ToLower() == "docx")
+        {
+            singleFileSaveToFolderViewModel = "/" + projectName + "/Content/img/Word.png";
+        }
+    }
+    if (Model.SingleFileSaveToDatabaseViewModel != null)
+    {
+        string[] extensation = Model.SingleFileSaveToDatabaseViewModel.Name.Split('.');
+        if (extensation[1].ToLower() == "pdf")
+        {
+            singleFileSaveToDatabaseViewModel = "/" + projectName + "/Content/img/Pdf.png";
+        }
+        else if (extensation[1].ToLower() == "xlsx")
+        {
+            singleFileSaveToDatabaseViewModel = "/" + projectName + "/Content/img/Excel.png";
+        }
+        else if (extensation[1].ToLower() == "docx")
+        {
+            singleFileSaveToDatabaseViewModel = "/" + projectName + "/Content/img/Word.png";
+        }
+    }
+    if (Model.ExcelFileDataSaveToDatabaseViewModel != null)
+    {
+        string[] extensation = Model.ExcelFileDataSaveToDatabaseViewModel.Name.Split('.');
+        if (extensation[1].ToLower() == "xlsx")
+        {
+            excelFileDataSaveToDatabaseViewModel = "/" + projectName + "/Content/img/Excel.png";
+        }
+    }
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Edit Complaient</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a asp-action="Index" asp-controller="Home" asp-area="User">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a>Edit Complaient</a>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="form-group  row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4">
+                            <h3>Edit Complaient</h3>
+                        </div>
+                        <div class="col-sm-4"></div>
+                    </div>
+                    <form asp-action="EditComplaient" asp-controller="Complaient" asp-area="User" method="post" enctype="multipart/form-data" id="form1" class="m-t">
+                        <div class="form-group  row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-4">
+                                <input id="errorId" type="hidden" value="@Model.Error" />
+                                <input id="messageId" type="hidden" value="@Model.Message" />
+                                @Html.TextBoxFor(model => model.ComplaientId, htmlAttributes: new { @style = "display:none" })
+                                @Html.TextBoxFor(model => model.ComplaientDetailsId, htmlAttributes: new { @style = "display:none" })
+                                @Html.TextBoxFor(model => model.ComplaientPermamentAddressId, htmlAttributes: new { @style = "display:none" })
+                                @Html.TextBoxFor(model => model.ComplaientTempAddressId, htmlAttributes: new { @style = "display:none" })
+                                <span class="text-danger font-bold" id="divError">@Model.Error</span>
+                                @*<div asp-validation-summary="All" class="text-danger font-bold"></div>*@
+                            </div>
+                            <div class="col-sm-4"></div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="ComplainantName">Name</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.ComplainantName, htmlAttributes: new { @class = "form-control", @placeholder = "Complainant Name" })
+                                @Html.ValidationMessageFor(model => model.ComplainantName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="ComplainantEmail">Email</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.ComplainantEmail, htmlAttributes: new { @class = "form-control", @placeholder = "Complainant Email" })
+                                @Html.ValidationMessageFor(model => model.ComplainantEmail, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*CompaientDate For Tbl Complaient*@
+                        <div class="form-group  row" id="data_1">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 font-normal">Complaient Date-One</label>
+                            <div class="col-sm-6">
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    @Html.TextBoxFor(m => m.CompaientDate, "{0:dd/MMMM/yyyy}", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.CompaientDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        @*CompaientDate For Tbl  Complaient Detail *@
+                        <div class="form-group  row" id="data_22">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 font-normal" asp-for="ComplaientDate">Complaient Date-Two (Formate-Month/Days/Year)</label>
+                            <div class="col-sm-6">
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    @Html.TextBoxFor(model => model.ComplaientDate, "{0:dd/MMMM/yyyy}", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.ComplaientDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="ComplaientCategoryId">Category</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.ComplaientCategoryId, new SelectList(Model.ComplaientCategory, "Value", "Text"), "Select Category", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ComplaientCategoryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row" id="divGenderDropdown">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="GenderId">Gender</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.GenderId, new SelectList(Model.Gender, "Value", "Text"), "Select Gender", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row" id="divGenderRadio">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Gender</label>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    @foreach (var item in (new SelectList(Model.Gender, "Value", "Text")))
+                                    {
+                                        <div class="radio">
+                                            @if (Model.GenderId == Convert.ToInt32(item.Value))
+                                            {
+                                                <input type="radio" id="@item.Value" checked class="cllRdGender" name="rdGender" value="@item.Value">
+                                                <label for="@item.Value">@item.Text</label>
+                                            }
+                                            else
+                                            {
+                                                <input type="radio" id="@item.Value" class="cllRdGender" name="rdGender" value="@item.Value">
+                                                <label for="@item.Value">@item.Text</label>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                                <span class="text-danger font-bold" style="display:none" id="divRd">Please select gender!</span>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        <div class="form-group  row" id="divBikeCategoriesCheckBox">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Bike Category</label>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    @for (int i = 0; i < Model.BikeCategories.Count; i++)
+                                    {
+                                        @*<input type="hidden" asp-for="@Model.BikeCategories[i].BikeCategoryId" />
+                                            <input type="hidden" asp-for="@Model.BikeCategories[i].Name" />
+                                            <input type="hidden" asp-for="@Model.BikeCategories[i].Description" />*@
+                                        <div class="col-sm-1">
+                                            @Html.TextBoxFor(model => model.BikeCategories[i].BikeCategoryId, htmlAttributes: new { @style = "display:none" })
+                                            @Html.TextBoxFor(model => model.BikeCategories[i].Name, htmlAttributes: new { @style = "display:none" })
+                                            @Html.TextBoxFor(model => model.BikeCategories[i].Description, htmlAttributes: new { @style = "display:none" })
+                                            @if (Model.BikeCategories[i].Status == true)
+                                            {
+                                                @Html.CheckBoxFor(model => model.BikeCategories[i].Status, htmlAttributes: new { @class = "chk", @type = "checkbox", @checked = "checked" })
+
+                                            }
+                                            else
+                                            {
+                                                @Html.CheckBoxFor(model => model.BikeCategories[i].Status, htmlAttributes: new { @class = "chk", @type = "checkbox" })
+
+                                            }
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label for="@Model.BikeCategories[i].Status" title="@Model.BikeCategories[i].Description">
+                                                @Model.BikeCategories[i].Name
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                                <span class="text-danger font-bold" style="display:none" id="divChk">Please select at-least one bike categories!</span>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        <div class="form-group  row" id="divBikeCategoriesSelectList">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Bike Category</label>
+                            <div class="col-sm-6">
+                                @Html.ListBoxFor(Model => Model.BikeCategoriesSelectListId, new SelectList(Model.BikeCategoriesSelectListForSelected, "BikeCategoryId", "Name", selectedValue: "SelectedId"), htmlAttributes: new { @class = "form-control", @id = "ddlBikeCategories", @multiple = "multiple", @style = "height: 100px" })
+                                @* @Html.DropDownListFor(model => model.BikeCategoriesSelectListId, new SelectList(Model.BikeCategoriesSelectListForSelected, "BikeCategoryId", "Name", selectedValue: "SelectedId"), "Select Bike Categorie", htmlAttributes: new { @class = "form-control", @id = "ddlBikeCategories", @multiple = "multiple", @style = "height: 100px" })*@
+                                <span class="text-danger font-bold" style="display:none" id="divBikeCategories">Please select at-least one bike categories!</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group  row" id="divCountry">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="CountryId">Country</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.CountryId, new SelectList(Model.Countries, "Value", "Text", Model.CountryId), "Select Country", htmlAttributes: new { @class = "form-control", @id = "ddlcountry" })
+                                @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row" id="divState">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="StateId">State</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.StateId, new SelectList(Model.States, "Value", "Text", Model.StateId), "Select State", htmlAttributes: new { @class = "form-control", @id = "ddlstate" })
+                                @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row" id="divCity">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="CityId">City</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.CityId, new SelectList(Model.Cities, "Value", "Text", Model.CityId), "Select City", htmlAttributes: new { @class = "form-control", @id = "ddlcity" })
+                                @Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Description</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.Description, htmlAttributes: new { @class = "form-control", @placeholder = "Description" })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Permament Address</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.PermamentAddress, htmlAttributes: new { @class = "form-control", @placeholder = "Permament Address" })
+                                @Html.ValidationMessageFor(model => model.PermamentAddress, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="PermamentAddressPostalCode">Permament Address Postal Code</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.PermamentAddressPostalCode, htmlAttributes: new { @class = "form-control", @placeholder = "Permament Address Postal Code", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.PermamentAddressPostalCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="TempAddress">Temp Address</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.TempAddress, htmlAttributes: new { @class = "form-control", @placeholder = "Temp Address" })
+                                @Html.ValidationMessageFor(model => model.TempAddress, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="TempAddressPostalCode">Temp Address Postal Code</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.TempAddressPostalCode, htmlAttributes: new { @class = "form-control", @placeholder = "Temp Address Postal Code", @type = "number" })
+                                @Html.ValidationMessageFor(model => model.TempAddressPostalCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*Only single image uplod to floder with image preview*@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Singale Image(Folder)</label>
+                            <div class="col-sm-6">
+                                <div class="row mb-1">
+                                    <input type="hidden" asp-for="SingleImageSaveToFolderViewModel.Id" />
+                                    @if (Model.SingleImageSaveToFolderViewModel != null)
+                                    {
+                                        <img id="imgSingleImageSaveToFolderPreview" title="@Model.SingleImageSaveToFolderViewModel.Name" src="@Model.SingleImageSaveToFolderViewModel.Path" style="width:100px;height:100px;" />
+                                    }
+                                    else
+                                    {
+                                        <img id="imgSingleImageSaveToFolderPreview" src="@photoPath" style="width:100px;height:100px;" />
+                                    }
+                                </div>
+                                @if (Model.SingleImageSaveToFolderViewModel != null)
+                                {
+                                    <div class="row">
+                                        <a href="@Url.Action("DownloadFileFromFolder", "Complaient", new { Area = "User", fileId = @Model.SingleImageSaveToFolderViewModel.Id })">
+                                            <p id="pSingleImageSaveToFolderId" title="Click here to download - @Model.SingleImageSaveToFolderViewModel.Name">@Model.SingleImageSaveToFolderViewModel.Name</p>
+                                        </a>
+                                    </div>
+                                }
+                                <div class="row">
+                                    <div class="btn-group">
+                                        <label title="Upload image file" for="iSingleImageSaveToFolder" class="btn btn-primary">
+                                            @Html.TextBoxFor(model => model.SingleImageSaveToFolder, htmlAttributes: new { @class = "clSingleImageSaveToFolder", @id = "iSingleImageSaveToFolder", @type = "file", @accept = ".png, .jpg, .jpeg" })
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        @*Muliple images uplod to floder with multiple image preview**@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Multiple Image(Folder)</label>
+                            <div class="col-sm-8">
+                                <div class="append_pre_p_v">
+                                    <div class="row mb-1">
+                                        <div class="clMultipleImageSaveToFolder" style="width: 100%;">
+                                            @if (Model.MultipleImageSaveToFolderViewModel != null)
+                                            {
+                                                <div class="row">
+                                                    @foreach (var item in Model.MultipleImageSaveToFolderViewModel)
+                                                    {
+                                                        <div class="col-3">
+                                                            <img src="@item.Path" title="@item.Name" style="width: 100px; height: 100px;margin-right: 1%;"><br />
+                                                            <a href="@Url.Action("DownloadFileFromFolder","Complaient",new { Area="User",fileId=@item.Id})">
+                                                                <p title="Click here to download - @item.Name">@item.Name</p>
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <img src="@photoPath" style='width: 100px; height: 100px;margin-right: 1%;'>
+                                            }
+                                        </div>
+                                        <span class="text-danger font-bold" id="spnMultipleImageSaveToFolder" style="display:none">Maximum <b>4</b> image can uplode!</span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="btn-group">
+                                            <label title="Upload image file" for="iMultipleImageSaveToFolder" class="custom-file-labell btn btn-primary">
+                                                @Html.TextBoxFor(model => model.MultipleImageSaveToFolder, htmlAttributes: new { @id = "iMultipleImageSaveToFolder", @type = "file", @accept = ".png, .jpg, .jpeg" })
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Only single image uplod to database with image preview*@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Singale Image(Database)</label>
+                            <div class="col-sm-6">
+                                <div class="row mb-1">
+                                    @if (Model.SingleImageSaveToDatabaseViewModel != null)
+                                    {
+                                        <img id="imgSingleImageSaveToDatabase" title="@Model.SingleImageSaveToDatabaseViewModel.Name" src="data:@Model.SingleImageSaveToDatabaseViewModel.ContentType;base64,@Convert.ToBase64String(Model.SingleImageSaveToDatabaseViewModel.Data)" style="width: 100px; height: 100px;margin-right: 1%;" />
+                                    }
+                                    else
+                                    {
+                                        <img id="imgSingleImageSaveToDatabase" src="@photoPath" style="width: 100px; height: 100px;margin-right: 1%;">
+                                    }
+                                </div>
+                                @if (Model.SingleImageSaveToDatabaseViewModel != null)
+                                {
+                                    <div class="row">
+                                        <a href="@Url.Action("DownloadFileFromDb", "Complaient", new { Area = "User", fileId = @Model.SingleImageSaveToDatabaseViewModel.Id })">
+                                            <p id="pSingleImageSaveToDatabaseId" title="Click here to download - @Model.SingleImageSaveToDatabaseViewModel.Name">@Model.SingleImageSaveToDatabaseViewModel.Name</p>
+                                        </a>
+                                    </div>
+                                }
+                                <div class="row">
+                                    <div class="btn-group">
+                                        <label title="Upload image file" for="iSingleImageSaveToDatabase" class="btn btn-primary">
+                                            @Html.TextBoxFor(model => model.SingleImageSaveToDatabase, htmlAttributes: new { @class = "clSingleImageSaveToDatabase", @id = "iSingleImageSaveToDatabase", @type = "file", @accept = ".png, .jpg, .jpeg" })
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        @*Muliple images uplod to database with multiple image preview**@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Multiple Image(Databse)</label>
+                            <div class="col-sm-8">
+                                <div class="append_pre_p_v">
+                                    <div class="row mb-1">
+                                        <div class="clMultipleImageSaveToDatabase" style="width: 100%;">
+                                            @if (Model.MultipleImageSaveToDatabaseViewModel != null)
+                                            {
+                                                <div class="row">
+                                                    @foreach (var item in Model.MultipleImageSaveToDatabaseViewModel)
+                                                    {
+                                                        <div class="col-3">
+                                                            <img src="data:@item.ContentType;base64,@Convert.ToBase64String(item.Data)" title="@item.Name" style="width: 100px; height: 100px;margin-right: 1%;"><br />
+                                                            <a href="@Url.Action("DownloadFileFromDb","Complaient",new { Area="User",fileId=@item.Id})">
+                                                                <p title="Click here to download - @item.Name">@item.Name</p>
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <img src="@photoPath" style='width: 100px; height: 100px;margin-right: 1%;'>
+                                            }
+                                        </div>
+                                        <span class="text-danger font-bold" id="spanMaxImageDatabase" style="display:none">Maximum <b>4</b> image can uplode!</span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="btn-group">
+                                            <label title="Upload image file" for="iMultipleImageSaveToDatabase" class="custom-file-labell btn btn-primary">
+                                                @Html.TextBoxFor(model => model.MultipleImageSaveToDatabase, htmlAttributes: new { @id = "iMultipleImageSaveToDatabase", @type = "file", @accept = ".png, .jpg, .jpeg", @multiple = "multiple" })
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Only single file uplod to floder *@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Singale File(Folder)</label>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    @*@Html.TextBoxFor(model => model.SingleFileSaveToFolderViewModel.Id, htmlAttributes: new { @style = "display:none" })*@
+                                    @if (Model.SingleFileSaveToFolderViewModel != null)
+                                    {
+                                        <img id="imgSingleFileSaveToFolder" title="@Model.SingleFileSaveToFolderViewModel.Name" src="@singleFileSaveToFolderViewModel" style="width:100px;height:100px;" />
+                                    }
+                                    else
+                                    {
+                                        <img id="imgSingleFileSaveToFolder" src="@fileImage" style="width:100px;height:100px;" />
+                                    }
+                                </div>
+                                @if (Model.SingleFileSaveToFolderViewModel != null)
+                                {
+                                    <div class="row mb-1">
+                                        <a href="@Url.Action("DownloadFileFromFolder", "Complaient", new { Area = "User", fileId = @Model.SingleFileSaveToFolderViewModel.Id })">
+                                            <p id="pSingleFileSaveToFolderId" title="Click here to download - @Model.SingleFileSaveToFolderViewModel.Name">@Model.SingleFileSaveToFolderViewModel.Name</p>
+                                        </a>
+                                    </div>
+                                }
+                                <div class="row">
+                                    <div class="btn-group">
+                                        <label title="Upload image file" for="iSingleFileSaveToFolder" class="btn btn-primary">
+                                            @Html.TextBoxFor(model => model.SingleFileSaveToFolder, htmlAttributes: new { @class = "clSingleFileSaveToFolder", @id = "iSingleFileSaveToFolder", @type = "file", @accept = ".pdf , .xlsx , .docx", @multiple = "multiple" })
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        @*Multile file uplod to floder *@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Multiple File(Folder)</label>
+                            <div class="col-sm-8">
+                                <div class="append_pre_p_v">
+                                    <div class="row">
+                                        <div class="clMultipleFileSaveToFolder" style="width: 100%;">
+                                            @if (Model.MultipleFileSaveToFolderViewModel != null)
+                                            {
+                                                <div class="row">
+                                                    @foreach (var item in Model.MultipleFileSaveToFolderViewModel)
+                                                    {
+                                                        var singleFileSaveToFolderViewModel2 = "";
+                                                        if (item.Name != null)
+                                                        {
+                                                            string[] extensationw = item.Name.Split('.');
+                                                            if (extensationw[1].ToLower() == "pdf")
+                                                            {
+                                                                singleFileSaveToFolderViewModel2 = "/" + projectName + "/Content/img/Pdf.png";
+                                                            }
+                                                            else if (extensationw[1].ToLower() == "xlsx")
+                                                            {
+                                                                singleFileSaveToFolderViewModel2 = "/" + projectName + "/Content/img/Excel.png";
+                                                            }
+                                                            else if (extensationw[1].ToLower() == "docx")
+                                                            {
+                                                                singleFileSaveToFolderViewModel2 = "/" + projectName + "/Content/img/Word.png";
+                                                            }
+                                                            else
+                                                            {
+                                                                singleFileSaveToFolderViewModel2 = "/" + projectName + "/Content/img/NoFile.png";
+                                                            }
+                                                        }
+                                                        <div class="col-3">
+                                                            <img src="@singleFileSaveToFolderViewModel2" title="@item.Name" style="width: 100px; height: 100px;margin-right: 1%;"><br />
+                                                            <a href="@Url.Action("DownloadFileFromFolder","Complaient",new { Area="User",fileId=@item.Id})">
+                                                                <p title="Click here to download - @item.Name">@item.Name</p>
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <img src="@fileImage" style='width: 100px; height: 100px;margin-right: 1%;'>
+                                            }
+                                        </div>
+                                        <span class="text-danger font-bold" id="spnMaxMultipleFileSaveToFolder" style="display:none">Maximum <b>2</b> file can uplode!</span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="btn-group">
+                                            <label title="Upload image file" for="iMultipleFileSaveToFolder" class="custom-file-labell btn btn-primary">
+                                                @Html.TextBoxFor(model => model.MultipleFileSaveToFolder, htmlAttributes: new { @id = "iMultipleFileSaveToFolder", @type = "file", @accept = ".pdf , .xlsx , .docx", @multiple = "multiple" })
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Only single file uplod to database *@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Singale File(Database)</label>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    @if (Model.SingleFileSaveToDatabaseViewModel != null)
+                                    {
+                                        <img id="imgSingleFileSaveToDatabase" title="@Model.SingleFileSaveToDatabaseViewModel.Name" src="@singleFileSaveToDatabaseViewModel" style="width:100px;height:100px;" />
+                                    }
+                                    else
+                                    {
+                                        <img id="imgSingleFileSaveToDatabase" src="@fileImage" style="width: 100px; height: 100px;margin-right: 1%;">
+                                    }
+                                </div>
+                                @if (Model.SingleFileSaveToDatabaseViewModel != null)
+                                {
+                                    <div class="row">
+                                        <a href="@Url.Action("DownloadFileFromDb", "Complaient", new { Area = "User", fileId = @Model.SingleFileSaveToDatabaseViewModel.Id })">
+                                            <p id="pSingleFileSaveToDatabase" title="Click here to download - @Model.SingleFileSaveToDatabaseViewModel.Name">@Model.SingleFileSaveToDatabaseViewModel.Name</p>
+                                        </a>
+                                    </div>
+                                }
+                                <div class="row">
+                                    <div class="btn-group">
+                                        <label title="Upload image file" for="iSingleFileSaveToDatabase" class="btn btn-primary">
+                                            @Html.TextBoxFor(model => model.SingleFileSaveToDatabase, htmlAttributes: new { @class = "clSingleFileSaveToDatabase", @id = "iSingleFileSaveToDatabase", @type = "file", @accept = ".pdf , .xlsx , .docx" })
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        @*Multile file to database *@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Multiple File(Database)</label>
+                            <div class="col-sm-8">
+                                <div class="append_pre_p_v">
+                                    <div class="row">
+                                        <div class="clMultipleFileSaveToDatabase" style="width: 100%;">
+                                            @if (Model.MultipleFileSaveToDatabaseViewModel != null)
+                                            {
+                                                <div class="row">
+                                                    @foreach (var item in Model.MultipleFileSaveToDatabaseViewModel)
+                                                    {
+                                                        var multipleFileSaveToDatabaseViewModel = "";
+                                                        if (item.Name != null)
+                                                        {
+                                                            string[] extensationw = item.Name.Split('.');
+                                                            if (extensationw[1].ToLower() == "pdf")
+                                                            {
+                                                                multipleFileSaveToDatabaseViewModel = "/" + projectName + "/Content/img/Pdf.png";
+                                                            }
+                                                            else if (extensationw[1].ToLower() == "xlsx")
+                                                            {
+                                                                multipleFileSaveToDatabaseViewModel = "/" + projectName + "/Content/img/Excel.png";
+                                                            }
+                                                            else if (extensationw[1].ToLower() == "docx")
+                                                            {
+                                                                multipleFileSaveToDatabaseViewModel = "/" + projectName + "/Content/img/Word.png";
+                                                            }
+                                                            else
+                                                            {
+                                                                multipleFileSaveToDatabaseViewModel = "/" + projectName + "/Content/img/NoFile.png";
+                                                            }
+                                                        }
+                                                        <div class="col-3">
+                                                            <img src="@multipleFileSaveToDatabaseViewModel" title="@item.Name" style="width: 100px; height: 100px;margin-right: 1%;"><br />
+                                                            <a href="@Url.Action("DownloadFileFromDb","Complaient",new { Area="User",fileId=@item.Id})">
+                                                                <p title="Click here to download - @item.Name">@item.Name</p>
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <img src="@fileImage" style='width: 100px; height: 100px;margin-right: 1%;'>
+                                            }
+                                        </div>
+                                        <span class="text-danger font-bold" id="spnMaxMultipleFileSaveToDatabase" style="display:none">Maximum <b>2</b> file can uplode!</span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="btn-group">
+                                            <label title="Upload image file" for="iMultipleFileSaveToDatabase" class="custom-file-labell btn btn-primary">
+                                                @Html.TextBoxFor(model => model.MultipleFileSaveToDatabase, htmlAttributes: new { @id = "iMultipleFileSaveToDatabase", @type = "file", @accept = ".pdf , .xlsx , .docx", @multiple = "multiple" })
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Bulk insert using excel *@
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label">Bulk insert using excel(Database)</label>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <input type="hidden" asp-for="ExcelFileDataSaveToDatabaseViewModel.Id" />
+                                    @if (Model.ExcelFileDataSaveToDatabaseViewModel != null)
+                                    {
+                                        <img id="imgExcelFileDataSaveToDatabase" title="@Model.ExcelFileDataSaveToDatabaseViewModel.Name" src="@excelFileDataSaveToDatabaseViewModel" style="width:100px;height:100px;" />
+                                    }
+                                    else
+                                    {
+                                        <img id="imgExcelFileDataSaveToDatabase" src="@fileImage" style="width: 100px; height: 100px;margin-right: 1%;">
+                                    }
+                                </div>
+                                @if (Model.ExcelFileDataSaveToDatabaseViewModel != null)
+                                {
+                                    <div class="row mb-1">
+                                        <a href="@Url.Action("DownloadExcelFileFromDb", "Complaient", new { Area = "User", fileId = @Model.ExcelFileDataSaveToDatabaseViewModel.Id })">
+                                            <p id="pExcelFileDataSaveToDatabaseId" title="Click here to download - @Model.ExcelFileDataSaveToDatabaseViewModel.Name">@Model.ExcelFileDataSaveToDatabaseViewModel.Name</p>
+                                        </a>
+                                    </div>
+                                }
+                                <div class="row">
+                                    <div class="btn-group">
+                                        <label title="Upload image file" for="iExcelFileDataSaveToDatabase" class="btn btn-primary">
+                                            @Html.TextBoxFor(model => model.ExcelFileDataSaveToDatabase, htmlAttributes: new { @class = "clExcelFileDataSaveToDatabase", @id = "iExcelFileDataSaveToDatabase", @type = "file", @accept = ".xlsx" })
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-12">
+                                <div class="m-b-sm m-t">
+                                    <small>
+                                        <strong style="color:red;font-weight:bold;">Terms & Conditions:</strong>We welcome users to register on our digital platforms. We offer the below mentioned registration services which may be subject to change in the future. All changes will be appended in the terms and conditions page and communicated to existing users by email.
+
+                                        Registration services are offered for individual subscribers only. If multiple individuals propose to access the same account or for corporate accounts kindly contact or write in to us. Subscription rates will vary for multiple same time access.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                @Html.CheckBoxFor(model => model.TermsAndConditions, htmlAttributes: new { @class = "cchkTermsAndConditions", @id = "idTermsAndConditions", @type = "checkbox" })
+                            </div>
+                            <span class="text-danger font-bold" style="display:none" id="divTermsAndConditions"><strong>Please check Terms & Conditions check box!</strong></span>
+                        </div>
+
+                        <div class="form-group  row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-2">
+                                <button type="submit" id="btnCreate" class="btn btn-primary block  m-b">Update Complaient</button>
+                            </div>
+                            <div class="col-sm-2">
+                                <a class="btn btn-primary" asp-action="complaients" asp-controller="Complaient" asp-area="User"> Complaients List</a>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/Scripts/lib/iCheck/custom.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/clockpicker/clockpicker.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/chosen/bootstrap-chosen.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/switchery/switchery.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/ionRangeSlider/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/ionRangeSlider/ion.rangeSlider.skinFlat.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/colorpicker/bootstrap-colorpicker.min.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/nouslider/jquery.nouislider.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/cropper/dist/cropper.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/select2/dist/css/select2.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.css" />
+    <link rel="stylesheet" href="~/Scripts/lib/bootstrap-tagsinput/bootstrap-tagsinput.css" />
+}
+
+@section Scripts {
+    <script src="~/Scripts/lib/moment/moment.js"></script>
+    <script src="~/Scripts/lib/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/lib/clockpicker/clockpicker.js"></script>
+    <script src="~/Scripts/lib/chosen/chosen.jquery.js"></script>
+    <script src="~/Scripts/lib/switchery/switchery.js"></script>
+    <script src="~/Scripts/lib/daterangepicker/daterangepicker.js"></script>
+    <script src="~/Scripts/lib/ionRangeSlider/ion.rangeSlider.min.js"></script>
+    <script src="~/Scripts/lib/colorpicker/bootstrap-colorpicker.min.js"></script>
+    <script src="~/Scripts/lib/nouslider/jquery.nouislider.min.js"></script>
+    <script src="~/Scripts/lib/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
+    <script src="~/Scripts/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/lib/jknob/dist/jquery.knob.min.js"></script>
+    <script src="~/Scripts/lib/cropper/dist/cropper.js"></script>
+    <script src="~/Scripts/lib/select2/dist/js/select2.js"></script>
+    <script src="~/Scripts/lib/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.js"></script>
+    <script src="~/Scripts/lib/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+    <script src="~/Scripts/lib/dualListbox/jquery.bootstrap-duallistbox.js"></script>
+    <script src="~/Scripts/js/EditComplaient.js"></script>
+    <script src="~/Scripts/js/FormControlsFunctions.js"></script>
+}

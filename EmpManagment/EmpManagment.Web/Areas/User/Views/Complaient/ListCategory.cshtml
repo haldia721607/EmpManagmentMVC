@@ -1,0 +1,185 @@
+﻿@model IEnumerable<EmpManagment.Bol.Entities.ComplaientCategory>
+@using System.Configuration;
+@{
+    ViewBag.Title = "Complaient Category";
+    var projectName = ConfigurationManager.AppSettings["SolutionProjectName"];
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Complaient Category Lists</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                @Html.ActionLink("Home", "Index", "Dashboard", new { area = "User" })
+            </li>
+            <li class="breadcrumb-item">
+                <a>Complaient Category</a>
+            </li>
+            <li class="active breadcrumb-item">
+                <strong>Category Lists</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <a class="btn btn-primary" href="@Url.Action("AddCategory","Complaient",new { Area="User"})"><i class="fa fa-plus"></i> Add New</a>
+                <button type="submit" id="btnDeleteMultipaleCategory" class="btn btn-danger">Delete Multipale Category</button>
+                <div class="ibox-title">
+                    <h5>Complaient Category Lists</h5>
+                </div>
+                <div class="ibox-content">
+                    <table id="tblCategoryList" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>Description</th>
+                                <th>userStatus</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="~/Scripts/lib/dataTables/datatables.min.css" rel="stylesheet" />
+<script src="~/Scripts/lib/dataTables/datatables.min.js"></script>
+<script src="~/Scripts/lib/dataTables/dataTables.bootstrap4.min.js"></script>
+
+<script type="text/javascript">
+        var datatable = $("#tblCategoryList").DataTable();
+    $(document).ready(function () {
+            bindCategoryList();
+            chkFun();
+            deleteMultipleCategory();
+        });
+
+        //Checkbox cheked and unchecked function
+        function chkFun() {
+            $('#tblCategoryList').on('click', '#chkAll', function () {
+                $('input:checkbox').not(this).prop('checked', this.checked);
+            });
+            $('#tblCategoryList').on('click', '#chk', function () {
+                var len = $("#tblCategoryList input[name='chk']").length;
+                var chkLen = $("#tblCategoryList input[name='chk']:checked").length;
+                if (len == chkLen) {
+                    $("#tblCategoryList #chkAll").not(this).prop('checked',"checked");
+                } else {
+                    $("#tblCategoryList #chkAll").prop("checked",false)
+                }
+            });
+        }
+
+        //Bind all category
+        function bindCategoryList() {
+                $.ajax({
+                type: 'GET',
+                url: '/@projectName/User/Complaient/GetAllCategoryList',
+                contentType: "application/json; charset=utf-8",
+                    success: function (DBdata) {
+                        datatable.destroy();
+                        datatable= $("#tblCategoryList").DataTable({
+                        destroy:true,
+                        data: DBdata.data,
+                        searching: true,
+                        ordering: true,
+                            pagingType: "full_numbers",
+                            "columns": [
+                                {
+                                    title: " <input type='checkbox' name='chkAll' class='chkAllClass' id='chkAll' value=''/>", "data": "ComplaientCategoryId", "render": function (data) {
+                                        return " <input type='checkbox' name='chk' class='chkClass' id='chk' value=" + data + " />";
+                                    },
+                                     "orderable": false,
+                                    "searchable": false,
+                                    "width": "150px"
+                                },
+                            { "data": "Description" },
+                            { title:"Status", "data": "UserStatus" },
+                            {
+                                "data": "ComplaientCategoryId", "render": function (data) {
+                                    return "<a class='btn btn-default btn-sm' href='@Url.Action("EditCategory", "Complaient",new { area="User"})?id=" + data + "')><i class='fa fa-pencil'></i> Edit</a> <a class='btn btn-danger btn-sm' style='margin-left:5px' onclick=Delete("+data+")><i class='fa fa-trash'></i> Delete</a>";
+                                },
+                                "orderable": false,
+                                "searchable": false,
+                                "width": "150px"
+                            }
+
+                        ],
+                        "language": {
+
+                            "emptyTable": "No data found, Please click on <b>Add New</b> Button"
+                        }
+                    });
+                    },
+                    error: function (xmlHttpRequest, errorText, thrownError) {
+                        alert(xmlHttpRequest, errorText, thrownError);
+                    }
+            });
+        }
+
+        //Delete Category function
+        function Delete(complaientCategoryId) {
+            if(confirm('Are You Sure to Delete this Employee Record ?'))
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Delete", "Complaient",new { area="User"})/' + complaientCategoryId,
+                    success: function (data) {
+                        if (data.success)
+                        {
+                            bindCategoryList();
+                            toastr.success(message = data.message, title = 'Deleted')
+                        }
+                    },
+                    error: function (xmlHttpRequest, errorText, thrownError) {
+                        alert(xmlHttpRequest, errorText, thrownError);
+                    }
+                });
+            }
+        }
+
+        function deleteMultipleCategory(){
+            $("#btnDeleteMultipaleCategory").click(function(){
+                var checkedCheckboxValue = new Array();
+                var count = $("#tblCategoryList input[name='chk']:checked").length;
+                if (count == 0) {
+                    alert("No rows selected to delete");
+                    return false;
+                }
+                else {
+                     $("#tblCategoryList input[name='chk']:checked").each(function () {
+                         checkedCheckboxValue.push($(this).attr('value'));
+                     });
+                }
+
+                if (confirm('Are You Sure to Delete ' + count+' selected categorys ?')){
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("MultipleCategoryDelete", "Complaient",new { area="User"})',
+                            data: { ids: checkedCheckboxValue },
+                            success: function (data) {
+                                if (data.success)
+                                {
+                                    bindCategoryList();
+                                    toastr.success(message = data.message, title = 'Deleted')
+                                }
+                                else {
+                                    toastr.warning(message = data.message, title = 'Not Deleted')
+                                }
+                            },
+                            error: function (xmlHttpRequest, errorText, thrownError) {
+                                alert(xmlHttpRequest, errorText, thrownError);
+                            }
+                    });
+                }
+            });
+        }
+</script>

@@ -1,0 +1,16 @@
+User Id of both projects(EmpManagment.Web(In MVC),EmpManagment(net core))
+r@gmail.com
+suraj@gmail.com
+superadmin@gmail.com
+nishu@gmail.com
+
+And password - Ravi@.12345 (This password applicable for all users in both projects.)
+
+DELETE FROM ComplaientTempAddresses
+DELETE FROM ComplaientPermamentAddresses
+DELETE FROM Files
+DELETE FROM BulkDatas
+DELETE FROM [Bulk]
+DELETE FROM BikeCollections
+DELETE FROM ComplaientDetails
+DELETE FROM Complaients

@@ -1,0 +1,41 @@
+﻿@model EmpManagment.Bol.ViewModels.UserAreaViewModels.ViewModels.UserClaimsViewModel
+@{
+    ViewBag.Title = "Manage User Claims";
+}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+
+                    @using (Html.BeginForm("ManageUserClaims", "Administration", new { Area = "User" }, FormMethod.Post))
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Manage User Claims</h2>
+                            </div>
+                            <div class="card-body">
+                                @Html.HiddenFor(m => m.UserId)
+                                @for (int i = 0; i < Model.Cliams.Count; i++)
+                                {
+                                    <div class="form-check m-1">
+                                        @Html.HiddenFor(m => m.Cliams[i].ClaimType)
+                                        @Html.CheckBoxFor(m => m.Cliams[i].IsSelected, htmlAttributes: new { @class = "form-check-input" })
+                                        <label class="form-check-label" asp-for="@Model.Cliams[i].IsSelected">
+                                            @Model.Cliams[i].ClaimType
+                                        </label>
+                                    </div>
+                                }
+                                <div class="text-danger">@Html.ValidationSummary()</div>
+                            </div>
+                            <div class="card-footer">
+                                <input type="submit" value="Update" class="btn btn-primary" style="width:auto" />
+                                @Html.ActionLink("Cancel", "EditUser", "Administration", new { area = "User", userId = Model.UserId }, htmlAttributes: new { @class = "btn btn-primary", @style = "width:auto" })
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

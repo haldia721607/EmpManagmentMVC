@@ -1,0 +1,108 @@
+﻿@model EmpManagment.Bol.ViewModels.UserAreaViewModels.ViewModels.BikeCategoryMainViewModel
+@using System.Configuration;
+@{
+    var projectName = ConfigurationManager.AppSettings["SolutionProjectName"];
+    var tuti = Model.BikeCategoriesViewModel.BikeCategoryId;
+}
+<div class="AddUserForm">
+    @using (Html.BeginForm("CreateBikeCategories", "Complaient", new { Area = "User" }, FormMethod.Post, htmlAttributes: new { @id = "myForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group  row">
+            <div class="col-sm-12">
+                <div class="text-danger font-bold">@Html.ValidationSummary()</div>
+                @if (Model != null)
+                {
+                    if (Model.ErrorDetails.Any())
+                    {
+                        foreach (var item in Model.ErrorDetails)
+                        {
+                            <span id="@item.Key" class="text-danger font-bold">@item.ErrorMessage</span>
+                        }
+                        foreach (var item in Model.ErrorDetails)
+                        {
+                            <span id="@item.Key" class="error">@item.ErrorMessage</span>
+                        }
+                    }
+                }
+            </div>
+        </div>
+        @Html.TextBoxFor(model=>model.BikeCategoriesViewModel.BikeCategoryId,htmlAttributes:new { @id= "hdnBikeCategoryId", @type="hidden"})
+        <div class="form-group  row">
+            <div class="col-sm-2"></div>
+            <label class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.BikeCategoriesViewModel.Name, htmlAttributes: new { @class = "form-control", @placeholder = "Name", @id = "txtName" })
+                @Html.ValidationMessageFor(model => model.BikeCategoriesViewModel.Name, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-6">
+                <span id="spanName" class="text-danger font-bold" style="display:none">Please fill name.</span>
+            </div>
+        </div>
+        <div class="form-group  row">
+            <div class="col-sm-2"></div>
+            <label class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.BikeCategoriesViewModel.Description, htmlAttributes: new { @class = "form-control", @placeholder = "Description", @id = "txtDescription" })
+                @Html.ValidationMessageFor(model => model.BikeCategoriesViewModel.Description, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-6">
+                <span id="spanDescription" class="text-danger font-bold" style="display:none">Please fill description.</span>
+            </div>
+        </div>
+        <div class="form-group  row">
+            <div class="col-sm-2"></div>
+            <label class="col-sm-2 col-form-label" asp-for="Status">Status</label>
+            <div class="col-sm-6">
+                @*Just pass to hardcode value we will impliment later if need .Just for concept clearing .*@
+                @if (Model.BikeCategoriesViewModel == null)
+                {
+                    @Html.DropDownList("Status", new SelectList(Model.Genders, "Value", "Text"), "Select Status", htmlAttributes: new { @class = "form-control", @id = "ddlStatus" })
+                    @Html.ValidationMessageFor(model => model.BikeCategoriesViewModel.Status, "", new { @class = "text-danger" })
+                }
+                else
+                {
+                    @Html.DropDownList("Status", new SelectList(Model.Genders, "Value", "Text",
+                    @*Model.BikeCategoriesViewModel.Status(Note- Pass hard code value False and comminted code is dynmic code)*@      Model.BikeCategoriesViewModel.Status), "Select Status", htmlAttributes: new { @class = "form-control", @id = "ddlStatus" })
+                    @Html.ValidationMessageFor(model => model.BikeCategoriesViewModel.Status, "", new { @class = "text-danger" })
+                }
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-6">
+                <span id="spanStatus" class="text-danger font-bold" style="display:none">Please select status.</span>
+            </div>
+        </div>
+
+        <div class="form-group  row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-2">
+                <button type="submit" id="btnCreate" class="btn btn-primary block  m-b">Create</button>
+            </div>
+        </div>
+    }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ('@ViewBag.message' == "success") {
+             debugger;
+              // Display a success toast, with a title
+              toastr.success(message = 'Bike category create successfully.', title ='Added')
+            }
+
+        if ('@ViewBag.message' == "fail") {
+                debugger;
+                toastr.success(message = 'Please fill the form !', title = 'Error')
+            }
+        });
+</script>

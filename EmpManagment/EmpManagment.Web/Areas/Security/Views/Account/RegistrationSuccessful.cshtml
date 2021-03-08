@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Registration Successful";
+}
+
+<div class="gray-bg">
+    <div class="middle-box text-center animated fadeInDown">
+        <h3 style="color:green">@ViewBag.Success</h3>
+        <hr />
+        <p class="font-bold"> @ViewBag.Message</p>
+        <hr />
+        @Html.ActionLink("Click here to navigate to the login page", "Login", "Account", new { area = "Security" },null)
+    </div>
+</div>
+

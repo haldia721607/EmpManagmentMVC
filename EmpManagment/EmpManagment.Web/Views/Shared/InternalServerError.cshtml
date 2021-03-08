@@ -1,0 +1,20 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+    ViewBag.Title = "InternalServerError";
+}
+
+<h4>InternalServerError</h4>
+
+<div class="middle-box text-center animated fadeInDown">
+    <h4>Internal Server Error!</h4>
+    <hr />
+    <h5 class="font-bold">
+        @if (Model != null)
+        {
+            <span>@Model.Exception.Message</span>
+        }
+
+    </h5>
+    @Html.ActionLink("Click here to navigate to home page", "Index", "Home", new { area = "" })
+    <hr />
+</div> 

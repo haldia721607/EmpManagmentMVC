@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Owin.Security.Authorization.Mvc</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.Owin.Security.Authorization.Mvc.HttpContextBaseOwinContextAccessor">
+            <summary>
+            Allows for easy access of the <see cref="T:Microsoft.Owin.IOwinContext"/> in a <see cref="N:System.Web"/> environment.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Owin.Security.Authorization.Mvc.HttpContextBaseOwinContextAccessor.Context">
+            <summary>
+            Gets an <see cref="T:Microsoft.Owin.IOwinContext"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Owin.Security.Authorization.Mvc.HttpContextBaseOwinContextAccessor.#ctor(System.Web.HttpContextBase)">
+            <summary>
+            Creates a new instance of <see cref="T:Microsoft.Owin.Security.Authorization.Mvc.HttpContextBaseOwinContextAccessor"/>.
+            </summary>
+            <param name="httpContextBase">The <see cref="T:System.Web.HttpContextBase"/> to be used to get an <see cref="T:Microsoft.Owin.IOwinContext"/>.</param>
+        </member>
+        <member name="T:Microsoft.Owin.Security.Authorization.Mvc.ResourceAuthorizeAttribute">
+            <summary>
+            Specifies that the class or method that this attribute is applied to requires the specified authorization.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Owin.Security.Authorization.Mvc.ResourceAuthorizeAttribute.Policy">
+            <inheritdoc />
+        </member>
+        <member name="P:Microsoft.Owin.Security.Authorization.Mvc.ResourceAuthorizeAttribute.ActiveAuthenticationSchemes">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Owin.Security.Authorization.Mvc.ResourceAuthorizeAttribute.OnAuthorization(System.Web.Mvc.AuthorizationContext)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Owin.Security.Authorization.Mvc.ResourceAuthorizeAttribute.AuthorizeCore(System.Web.HttpContextBase)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Confirm Email";
+}
+
+<div class="middle-box text-center animated fadeInDown">
+    <h3 style="color:green">Email id verified successfully. </h3>
+    <hr />
+    <p class="font-bold">
+        Thank you for confirming your email. Please @Html.ActionLink("Click here to Log in", "Login", "Account", new { area = "Security" }, htmlAttributes: new { id = "loginLink" })
+    </p>
+    <hr />
+</div>
+

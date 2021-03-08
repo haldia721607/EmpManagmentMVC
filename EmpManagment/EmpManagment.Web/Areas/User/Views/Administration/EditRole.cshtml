@@ -1,0 +1,68 @@
+﻿@model EmpManagment.Bol.ViewModels.UserAreaViewModels.ViewModels.EditRoleViewModel
+@{
+    ViewBag.Title = "Edit Role";
+}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="form-group  row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"><h3>Edit Role</h3></div>
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4"></div>
+                    </div>
+                    @using (Html.BeginForm("EditRole", "Administration", new { Area = "User" }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group row">
+                            <label asp-for="Id" class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(model => model.Id, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Role Name</label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(model => model.RoleName, htmlAttributes: new { @class = "form-control", @placeholder = "Role Name" })
+                                @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="text-danger">@Html.ValidationSummary()</div>
+                        <div class="form-group row">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                @Html.ActionLink("Cancel", "ListRoles", "Administration", new { area = "User" }, htmlAttributes: new { @class = "btn btn-primary" })
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Users in this role</h3>
+                            </div>
+                            <div class="card-body">
+                                @if (Model.Users.Any())
+                                {
+                                    foreach (var user in Model.Users)
+                                    {
+                                        <h5 class="card-title">@user</h5>
+                                    }
+                                }
+                                else
+                                {
+                                    <h5 class="card-title">None at the moment</h5>
+                                }
+                            </div>
+                            <div class="card-footer">
+                                @Html.ActionLink("Add or remove users from this role", "EditUsersInRole", "Administration", new { area = "User", roleId = Model.Id }, htmlAttributes: new { @class = "btn btn-primary" })
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

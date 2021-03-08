@@ -1,0 +1,130 @@
+﻿@using Microsoft.AspNet.Identity
+@model EmpManagment.Bol.ViewModels.Security.ViewModels.RegisterViewModel
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="form-group  row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4"></div>
+                    </div>
+                    @using (Html.BeginForm("Register", "Account", new { Area = "Security" }, FormMethod.Post))
+                    {
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            <div class="text-danger">@Html.ValidationSummary()</div>
+                        </div>
+                        @Html.AntiForgeryToken()
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="Name">Name</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.Name, htmlAttributes: new { @class = "form-control", @placeholder = "Name" })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="Email">Email</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.Email, htmlAttributes: new { @class = "form-control", @placeholder = "Email" })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="Password">Password</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.Password, htmlAttributes: new { @class = "form-control", @placeholder = "Password", @type = "password" })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="ConfirmPassword">Confirm Password</label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "form-control", @placeholder = "Confirm Password", @type = "password" })
+                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="countryId">Country</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.countryId, new SelectList(Model.Countries, "Value", "Text"), "Select Country", htmlAttributes: new { @class = "form-control", @id = "ddlcountry" })
+                                @Html.ValidationMessageFor(model => model.countryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="stateId">State</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.stateId, new SelectList(string.Empty, "Value", "Text"), "Select State", htmlAttributes: new { @class = "form-control", @id = "ddlstate" })
+                                @Html.ValidationMessageFor(model => model.stateId, "", new { @class = "text-danger" })
+                                @Html.Hidden("getStates", Url.Action("GetStatelist", "Account", new { Area = "Security" }))
+                                <span id="states-loading-progress" style="display: none;">Please wait..</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="cityId">City</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(model => model.cityId, new SelectList(string.Empty, "Value", "Text"), "Select City", htmlAttributes: new { @class = "form-control", @id = "ddlcity" })
+                                @Html.ValidationMessageFor(model => model.cityId, "", new { @class = "text-danger" })
+                                @Html.Hidden("getCites", Url.Action("GetCitylist", "Account", new { Area = "Security" }))
+                                <span id="city-loading-progress" style="display: none;">Please wait..</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2"></div>
+                            <label class="col-sm-2 col-form-label" asp-for="TermsAndPolicy">Terms & Policy</label>
+                            <div class="col-sm-6">
+                                <div class="checkbox">
+                                    <label>
+                                        @Html.CheckBoxFor(model => model.TermsAndPolicy, htmlAttributes: new { @type = "checkbox" })
+                                        <i></i> Agree the terms and policy
+                                    </label>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.TermsAndPolicy, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-2">
+                                <button type="submit" class="btn btn-primary block full-width m-b">Register</button>
+                            </div>
+                            @if (Request.IsAuthenticated)
+                            {
+                                <div class="col-sm-2">
+                                    <a class="btn btn-primary block full-width m-b" href="@Url.Action("Users","Administration",new { Area = "User" })">Cancel</a>
+                                </div>
+                            }
+                        </div>
+                        if (!Request.IsAuthenticated)
+                        {
+                            <div class="form-group row">
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-2">
+                                    <p class="text-muted text-center"><small>Already have an account?</small></p>
+                                </div>
+                                <div class="col-sm-2">
+                                    @Html.ActionLink("Login", "Login", "Account", new { area = "Security" }, htmlAttributes: new { @class = "btn btn-sm btn-white btn-block" })
+                                </div>
+                            </div>
+                        }
+                    }
+                    <p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/Scripts/CustomScripts/Custom.js"></script>
+}

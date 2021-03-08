@@ -1,0 +1,84 @@
+﻿<div class="row border-bottom white-bg">
+    <nav class="navbar navbar-expand-lg navbar-static-top" role="navigation">
+        @*<a href="#" class="navbar-brand">Inspinia</a>*@
+        @*<a href="@Url.Action("Index","Home")" class="navbar-brand">Inspinia</a>*@
+        @Html.ActionLink("Inspinia", "Index", "Home", new { area = "" }, htmlAttributes: new { @class = "navbar-brand" })
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa fa-reorder"></i>
+        </button>
+        <div class="navbar-collapse collapse" id="navbar">
+            <ul class="nav navbar-nav mr-auto">
+                @if (Request.IsAuthenticated)
+                {
+                    <li class="dropdown">
+                        <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> Complaient</a>
+                        <ul role="menu" class="dropdown-menu">
+                            <li>
+                                <a href="@Url.Action("complaients","Complaient",new { Area="User"})">Complaient's</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> Category</a>
+                        <ul role="menu" class="dropdown-menu">
+                            <li>
+                                <a href="@Url.Action("ListCategory","Complaient",new { Area="User"})">Category's</a>
+                            </li>
+                        </ul>
+                    </li>
+                    if (Html.IsClaime("EditRolePolicy"))
+                    {
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> Manager</a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li>
+                                    <a href="@Url.Action("ListRoles","Administration",new { Area="User"})">Role Manager</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Users","Administration",new { Area="User"})">Users</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    }
+                }
+            </ul>
+            <ul class="nav navbar-top-links navbar-right">
+                @if (Request.IsAuthenticated)
+                {
+                    <li>
+                        <span>Welcome to - @User.Identity.Name</span>
+                    </li>
+                    <li class="dropdown">
+                        <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">Account</a>
+                        <ul role="menu" class="dropdown-menu">
+                            <li>
+                                <a href="@Url.Action("ChangePassword","ManagePassword",new { Area="User"})">Change Password</a>
+                            </li>
+                            <li>
+                                @using (Html.BeginForm("Logout", "Account", new { Area = "Security" }, FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" style="width:auto" class="nav-link btn btn-link py-0 fa fa fa-sign-out"> Logout </button>
+                                }
+                            </li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="@Url.Action("Register","Account",new { Area="Security"})">
+                            <i class="fa fa-sign-out"></i> Register
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Login","Account",new { Area="Security"})">
+                            <i class="fa fa-sign-out"></i> Login
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+</div>
